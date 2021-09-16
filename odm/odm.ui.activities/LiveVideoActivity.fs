@@ -20,7 +20,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open utils.fsharp
 //    open odm.ui.core
@@ -36,7 +36,7 @@ namespace odm.ui.activities
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
         
@@ -77,7 +77,7 @@ namespace odm.ui.activities
                         close = (fun ()->this.Complete())
                     )
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.ShowForm(model)
             }

@@ -19,7 +19,7 @@
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     ////open odm.models
     open utils.fsharp
     open ProfileDescription
@@ -60,7 +60,7 @@
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 
@@ -103,7 +103,7 @@
                                 let ptz = session :> IPtzAsync 
                                 return! ptz.GetConfigurations()
                             with err->
-                                dbg.Error(err)
+                                utils.dbg.Error(err)
                                 return null
                     }
                     if ptzcs |> NotNull then

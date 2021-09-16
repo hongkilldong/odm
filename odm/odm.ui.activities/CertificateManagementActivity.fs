@@ -23,7 +23,7 @@
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open utils.fsharp
 
@@ -32,7 +32,7 @@
         let dev = session :> IDeviceAsync
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
         

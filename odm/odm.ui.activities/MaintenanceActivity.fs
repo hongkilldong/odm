@@ -23,7 +23,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open utils.fsharp
     open odm.ui
@@ -39,7 +39,7 @@ namespace odm.ui.activities
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 
@@ -131,7 +131,7 @@ namespace odm.ui.activities
                     }
                     do! InfoView.Show(ctx, msg) |> Async.Ignore
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
             })
             return! this.Main()
@@ -172,7 +172,7 @@ namespace odm.ui.activities
                     }
                     do! InfoView.Show(ctx, msg) |> Async.Ignore
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
             })
             return! this.ShowForm(model)
@@ -186,7 +186,7 @@ namespace odm.ui.activities
                     ctx.RegisterInstance<INvtSession>(session) |> ignore
                     do! UpgradeFirmwareActivity.Run(ctx, firmwarePath)
                 with err->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
             })
             return! this.ShowForm(model)

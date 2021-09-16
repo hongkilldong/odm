@@ -19,7 +19,7 @@
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open utils.extensions
     //open odm.models
     open utils.fsharp
@@ -36,7 +36,7 @@
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 
@@ -94,7 +94,7 @@
                 //FIX: D-Link DSC-2230 doesn't support GetNode request
                 return! ptz.GetNode(cfg.nodeToken)
             with err->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 return CreateStandartPtzNode(cfg.nodeToken)
         }
 
@@ -102,7 +102,7 @@
             try
                 return! ptz.GetStatus(token)
             with err->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 return null;
         }
 
@@ -125,7 +125,7 @@
                     try
                         return! ptz.GetPresets(profToken)
                     with err->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         return [||]
                 }
             )

@@ -18,7 +18,7 @@
     open onvif.services
     open onvif.utils
 
-    open utils
+    // open utils
     open utils.fsharp
     open ProfileDescription
     open odm.ui
@@ -65,7 +65,7 @@
         let facade = new OdmSession(session)
 
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 
@@ -90,7 +90,7 @@
                         let! nodes = ptz.GetNodes()
                         return nodes |> SuppressNull [||]
                     with err->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         return [||]
                 else
                     return [||]

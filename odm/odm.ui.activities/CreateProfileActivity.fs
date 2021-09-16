@@ -20,7 +20,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     ////open odm.models
     open utils.fsharp
     open ProfileDescription
@@ -52,7 +52,7 @@ namespace odm.ui.activities
                     else
                         return [||]
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     return [||]
             }
             let! ascs = async{
@@ -60,7 +60,7 @@ namespace odm.ui.activities
                     let! ascs = session.GetAudioSourceConfigurations()
                     return ascs |> SuppressNull [||]
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     return [||]
             }
             let model = new ProfileCreationView.Model(
@@ -113,7 +113,7 @@ namespace odm.ui.activities
                     }
                     return this.ShowForm(model)
                 with err->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -132,7 +132,7 @@ namespace odm.ui.activities
                         configure = (fun model->this.Configure(model))
                     )
                 with err->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -147,7 +147,7 @@ namespace odm.ui.activities
                     let result = CreateProfileActivityResult.Created(profile)
                     return this.Complete(result)
                 with err->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -171,7 +171,7 @@ namespace odm.ui.activities
                             return this.Complete(result)
                     }
                 with err->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -216,7 +216,7 @@ namespace odm.ui.activities
                         | None -> ()
                     return this.ShowForm(model)
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.ShowForm(model)
             }
@@ -266,7 +266,7 @@ namespace odm.ui.activities
                         | None -> ()
                     return this.ShowForm(model)
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.ShowForm(model)
             }

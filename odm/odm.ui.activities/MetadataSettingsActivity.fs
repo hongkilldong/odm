@@ -23,7 +23,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open utils.fsharp
     open odm.ui
@@ -110,13 +110,13 @@ namespace odm.ui.activities
                     let any = metaCfg.events |> IfNotNull(fun x->x.filter |> IfNotNull(fun x-> x.Any))
                     for x in any |> SuppressNull [||] do
                         if x.Name = XName.Get("TopicExpression", xmlns_wsnt) then
-                            yield x.Deserialize<TopicExpressionFilter>()
+                            yield utils.XmlExtensions.Deserialize<TopicExpressionFilter>(x)
                 |]
                 model.messageContentFilters <- [|
                     let any = metaCfg.events |> IfNotNull(fun x->x.filter |> IfNotNull(fun x-> x.Any))
                     for x in any |> SuppressNull [||] do
                         if x.Name = XName.Get("MessageContent", xmlns_wsnt) then
-                            yield x.Deserialize<MessageContentFilter>()
+                            yield utils.XmlExtensions.Deserialize<MessageContentFilter>(x)
                 |]
             else
                 model.includeEvents <- false //see [ONVIF-Media-Service-Spec-v210] topic 5.21.27 "MetadataConfiguration"
@@ -145,11 +145,11 @@ namespace odm.ui.activities
                 let filters = [|
                     if model.messageContentFilters |> NotNull then
                         for x in model.messageContentFilters do
-                            yield XmlExtensions.SerializeAsXElement(x)
+                            yield utils.XmlExtensions.SerializeAsXElement(x)
 
                     if model.topicExpressionFilters |> NotNull then
                         for x in model.topicExpressionFilters do
-                            yield XmlExtensions.SerializeAsXElement(x)
+                            yield utils.XmlExtensions.SerializeAsXElement(x)
                 |]
                 if filters.Length>0 then
                     metaCfg.events.filter <- new FilterType()

@@ -20,7 +20,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open utils.fsharp
     open odm.ui
@@ -36,7 +36,7 @@ namespace odm.ui.activities
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 
@@ -127,11 +127,11 @@ namespace odm.ui.activities
                     let tt = @"http://www.onvif.org/ver10/schema"
                     for x in options.extension.any |> Seq.filter (fun x->x.NamespaceURI = tt) do
                         if x.Name = @"JPEG" then
-                            yield x.Deserialize<JpegOptions2>().bitrateRange
+                            yield utils.XmlExtensions.Deserialize<JpegOptions2>(x).bitrateRange
                         elif x.Name = @"MPEG4" then
-                            yield x.Deserialize<Mpeg4Options2>().bitrateRange
+                            yield utils.XmlExtensions.Deserialize<Mpeg4Options2>(x).bitrateRange
                         elif x.Name = @"H264" then
-                            yield x.Deserialize<H264Options2>().bitrateRange
+                            yield utils.XmlExtensions.Deserialize<H264Options2>(x).bitrateRange
             })
             
             let quality = vec.quality

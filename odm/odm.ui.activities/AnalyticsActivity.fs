@@ -26,7 +26,7 @@
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open utils.fsharp
     open odm.ui
@@ -101,7 +101,7 @@
                         return this.ShowForm(model)
                     }
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return this.Main()
             }
@@ -135,7 +135,7 @@
                         )
                     )
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return this.Complete()
             }
@@ -172,10 +172,10 @@
                     item.any <- 
                         match schemaElement with
                         | Some sel ->
-                            ProtoSchemeGenerator.CreateProtoElement(sel).ToXmlElement()
+                            utils.XmlExtensions.ToXmlElement(ProtoSchemeGenerator.CreateProtoElement(sel))
                         | None ->
                             let err = new Exception(String.Format("scheme definition for element {0} is missing", eid.``type``))
-                            dbg.Error(err)
+                            utils.dbg.Error(err)
                             raise err
                     //item.Any <- get_element_default(eid.Type)
                     yield item
@@ -210,7 +210,7 @@
                                 )
                             )
                         with err ->
-                            dbg.Error(err)
+                            utils.dbg.Error(err)
                             do! ErrorView.Show(ctx, err) |> Async.Ignore
                             return this.ShowForm(model)
                     }
@@ -235,7 +235,7 @@
                                 )
                             )
                         with err ->
-                            dbg.Error(err)
+                            utils.dbg.Error(err)
                             do! ErrorView.Show(ctx, err) |> Async.Ignore
                             return this.ShowForm(model)
                     }
@@ -247,7 +247,7 @@
                         use! progress = Progress.Show(ctx, LocalDevice.instance.applying)
                         do! van.CreateAnalyticsModules(vacToken, [|config|])
                     with err ->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         do! ErrorView.Show(ctx, err) |> Async.Ignore
 
                     return! this.Main()
@@ -274,7 +274,7 @@
                                 )
                             )
                         with err ->
-                            dbg.Error(err)
+                            utils.dbg.Error(err)
                             do! ErrorView.Show(ctx, err) |> Async.Ignore
                             return this.ShowForm(model)
                     }
@@ -299,7 +299,7 @@
                                 )
                             )
                         with err ->
-                            dbg.Error(err)
+                            utils.dbg.Error(err)
                             do! ErrorView.Show(ctx, err) |> Async.Ignore
                             return this.ShowForm(model)
                     }
@@ -311,7 +311,7 @@
                         use! progress = Progress.Show(ctx, LocalDevice.instance.applying)
                         do! van.CreateRules(vacToken, [|config|])
                     with err ->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         do! ErrorView.Show(ctx, err) |> Async.Ignore
 
                     return! this.Main()
@@ -340,7 +340,7 @@
                         )
                     )
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return this.ShowForm(model)
             }
@@ -366,7 +366,7 @@
                         )
                     )
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return this.ShowForm(model)
             }
@@ -378,7 +378,7 @@
                 use! progress = Progress.Show(ctx, LocalDevice.instance.applying)
                 do! van.ModifyAnalyticsModules(vacToken, [|config|])
             with err ->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 do! ErrorView.Show(ctx, err) |> Async.Ignore
             
             return! this.Main()
@@ -389,7 +389,7 @@
                 use! progress = Progress.Show(ctx, LocalDevice.instance.applying)
                 do! van.ModifyRules(vacToken, [|config|])
             with err ->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 do! ErrorView.Show(ctx, err) |> Async.Ignore
             
             return! this.Main()
@@ -402,7 +402,7 @@
                     do! van.DeleteAnalyticsModules(vacToken, [|moduleName|])
                     return this.Main()
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return this.Main()
             }
@@ -416,7 +416,7 @@
                     do! van.DeleteRules(vacToken, [|ruleName|])
                     return this.Main()
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return this.Main()
             }

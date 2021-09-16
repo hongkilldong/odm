@@ -20,7 +20,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     //open odm.models
     open odm.ui
     open utils.fsharp
@@ -38,7 +38,7 @@ namespace odm.ui.activities
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 
@@ -51,21 +51,21 @@ namespace odm.ui.activities
                     try
                         return! img.GetOptions(videoSourceToken)
                     with err ->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         return null
                 },
                 async{
                     try
                         return! img.GetImagingSettings(videoSourceToken)
                     with err ->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         return null
                 },
                 async{
                     try
                         return! img.GetMoveOptions(videoSourceToken)
                     with err ->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         return null
                 }
             )

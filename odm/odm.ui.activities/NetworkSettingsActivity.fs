@@ -20,7 +20,7 @@
     open odm.core
     open odm.infra
     open odm.onvif
-    open utils
+    // open utils
     //open utils.extensions
     //open odm.models
     open utils.fsharp
@@ -68,7 +68,7 @@
                             let! dm = dev.GetDiscoveryMode()
                             return (true, dm)
                         with err ->
-                            dbg.Error(err)
+                            utils.dbg.Error(err)
                             return (false, DiscoveryMode.nonDiscoverable)
                     }
                 )
@@ -352,7 +352,7 @@
                     }
                     return this.ShowForm(model)
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -369,7 +369,7 @@
                         close = (fun ()->this.Complete())
                     )
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -386,7 +386,7 @@
                 use! progress = Progress.Show(ctx, LocalDevice.instance.applying)
                 do! apply(model)
             with err -> 
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 do! show_error(err)
 
             return! this.Main()

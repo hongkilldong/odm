@@ -21,7 +21,7 @@
     open odm.core
     open odm.ui
     //open odm.infra
-    open utils
+    // open utils
     open utils.fsharp
     ////open odm.models
     //open utils.fsharp
@@ -175,7 +175,7 @@
                     }
                     return this.ShowForm(model)
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -191,7 +191,7 @@
                         close = (fun ()->this.Complete())
                     )
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }
@@ -207,7 +207,7 @@
                     }
                     return this.Main()
                 with err ->
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! show_error(err)
                     return this.Main()
             }

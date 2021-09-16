@@ -17,7 +17,7 @@ namespace odm.ui.activities
     open odm.onvif
     open odm.core
     open odm.infra
-    open utils
+    // open utils
     open utils.fsharp
 
     type VideoPlayerActivity(ctx:IUnityContainer, model: VideoPlayerActivityModel) = class
@@ -26,7 +26,7 @@ namespace odm.ui.activities
         let facade = new OdmSession(session)
         
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
 

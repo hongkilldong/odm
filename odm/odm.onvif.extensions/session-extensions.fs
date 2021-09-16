@@ -23,7 +23,7 @@
     open onvif.services
     open onvif.utils
 
-    open utils
+    // open utils
     open utils.fsharp
 
     [<Extension>]

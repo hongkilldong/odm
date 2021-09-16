@@ -18,7 +18,7 @@
     open onvif.services
     open onvif.utils
 
-    open utils
+    // open utils
     open utils.fsharp
     open odm.ui
     
@@ -31,7 +31,7 @@
         let facade = new OdmSession(session)
 
         let show_error(err:Exception) = async{
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
         }
         let eventEngine = session :> IEventAsync
@@ -127,7 +127,7 @@
                 use! progress = Progress.Show(ctx, "creating a new action trigger...")
                 do! actionEngine.CreateActionTriggers([| model.trigger.Configuration |]) |> Async.Ignore
             with err -> 
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 do! ErrorView.Show(ctx, err) |> Async.Ignore
             return! this.Main()
         }

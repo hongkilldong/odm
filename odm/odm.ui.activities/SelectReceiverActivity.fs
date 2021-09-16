@@ -17,7 +17,7 @@ open odm.ui
 
 open onvif.services
 open onvif.utils
-open utils
+// open utils
 open utils.fsharp
 open ProfileDescription
 
@@ -35,7 +35,7 @@ type SelectReceiverActivity(ctx:IUnityContainer, selectedRecieverToken:string) =
                 }
                 return this.ShowForm(receivers, selection)
             with err ->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 do! ErrorView.Show(ctx, err) |> Async.Ignore
                 return this.Main(selection)
         }
@@ -112,7 +112,7 @@ type SelectReceiverActivity(ctx:IUnityContainer, selectedRecieverToken:string) =
                     close = (fun () -> async{return None})
                 )
             with err ->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 do! ErrorView.Show(ctx, err) |> Async.Ignore
                 return async{return None}
         }
@@ -129,7 +129,7 @@ type SelectReceiverActivity(ctx:IUnityContainer, selectedRecieverToken:string) =
                     let! res = recv.CreateReceiver(m.receiver.configuration)
                     return Some res
                 with err -> 
-                    dbg.Error(err)
+                    utils.dbg.Error(err)
                     do! ErrorView.Show(ctx, err) |> Async.Ignore
                     return None
             }),
@@ -150,7 +150,7 @@ type SelectReceiverActivity(ctx:IUnityContainer, selectedRecieverToken:string) =
                         do! recv.ConfigureReceiver(m.receiver.token, m.receiver.configuration)
                         return true
                     with err -> 
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         do! ErrorView.Show(ctx, err) |> Async.Ignore
                         return false
                 }),
@@ -158,7 +158,7 @@ type SelectReceiverActivity(ctx:IUnityContainer, selectedRecieverToken:string) =
                 cancel = (fun m -> async{return false})
             )
         with err ->
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
             return false
     }
@@ -168,7 +168,7 @@ type SelectReceiverActivity(ctx:IUnityContainer, selectedRecieverToken:string) =
             do! recv.DeleteReceiver(receiverToDelete.token)
             return true
         with err ->
-            dbg.Error(err)
+            utils.dbg.Error(err)
             do! ErrorView.Show(ctx, err) |> Async.Ignore
             return false
     }

@@ -24,7 +24,7 @@
 
     open odm.core
     open odm.onvif
-    open global.utils
+    // open global.utils
     open utils.fsharp
     type NetworkInterface = onvif.services.NetworkInterface
     type IPAddress = onvif.services.IPAddress
@@ -291,19 +291,19 @@
                     try 
                         (!request).Abort()
                     with err ->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                     request := null
                 if !response |> NotNull then
                     try
                         (!response).Close()
                     with err->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                     response := null
                 if !stream |> NotNull then
                     try
                         (!stream).Close()
                     with err->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                     stream := null
             let ensure_not_disposed() = 
                 if !stream |> IsNull then
@@ -421,7 +421,7 @@
                             if disposing then dispose()
                 }
             with err ->
-                dbg.Error(err)
+                utils.dbg.Error(err)
                 dispose()
                 return raise(err) //reraise()
         }
@@ -915,11 +915,11 @@
             let filters = seq{
                 if messageContentFilters |> NotNull then
                     for x in messageContentFilters do
-                        yield XmlExtensions.SerializeAsXElement(x)
+                        yield utils.XmlExtensions.SerializeAsXElement(x)
 
                 if topicExpressionFilters |> NotNull then
                     for x in topicExpressionFilters do
-                        yield XmlExtensions.SerializeAsXElement(x)
+                        yield utils.XmlExtensions.SerializeAsXElement(x)
             }
             this.GetPullPointEvents(filters)
         
@@ -956,7 +956,7 @@
                             try
                                 do! subman.Unsubscribe()
                             with err->
-                                dbg.Error(err)
+                                utils.dbg.Error(err)
                         }
                         
                         let notify(resp:PullMessagesResponse) = 
@@ -965,7 +965,7 @@
                                     if x.Message |> NotNull then
                                         let tt = "http://www.onvif.org/ver10/schema"
                                         if x.Message.LocalName = "Message" && x.Message.NamespaceURI = tt then
-                                            x.Message.Deserialize<Message>()
+                                            utils.XmlExtensions.Deserialize<Message>(x.Message)
                                         else
                                             null
                                     else
@@ -1022,7 +1022,7 @@
                                                 messageLimit
                                         return loop(subman, XsDuration.Parse(fault.Detail.MaxTimeout) , fault.Detail.MaxMessageLimit)
                                     | err -> 
-                                        dbg.Error(err)
+                                        utils.dbg.Error(err)
                                         return async{return ()}
                                 }
                                 return! cont
@@ -1034,21 +1034,21 @@
                                         do! subman.Renew(timeout.Format(), null) |> Async.Ignore
                                         return loop(subman, timeout, messageLimit)
                                     with err->
-                                        dbg.Error(err)
+                                        utils.dbg.Error(err)
                                         return async{return ()}
                                 }
                                 return! cont
                             }
                         do! main()
                     with err->
-                        dbg.Error(err)
+                        utils.dbg.Error(err)
                         observer.OnError(err)
                     return ()
                 }
                 Async.StartWithContinuations(
                     comp,
                     (fun res->()),
-                    (fun err->dbg.Error(err)),
+                    (fun err->utils.dbg.Error(err)),
                     (fun err->()),
                     cts.Token
                 )
@@ -1070,11 +1070,11 @@
             let filters = seq{
                 if messageContentFilters |> NotNull then
                     for x in messageContentFilters do
-                        yield XmlExtensions.SerializeAsXElement(x)
+                        yield utils.XmlExtensions.SerializeAsXElement(x)
 
                 if topicExpressionFilters |> NotNull then
                     for x in topicExpressionFilters do
-                        yield XmlExtensions.SerializeAsXElement(x)
+                        yield utils.XmlExtensions.SerializeAsXElement(x)
             }
             this.GetBaseEvents(port, filters)
 
@@ -1108,7 +1108,7 @@
                             if x.Message |> NotNull then
                                 let tt = "http://www.onvif.org/ver10/schema"
                                 if x.Message.LocalName = "Message" && x.Message.NamespaceURI = tt then
-                                    x.Message.Deserialize<Message>()
+                                    utils.XmlExtensions.Deserialize<Message>(x.Message)
                                 else
                                     null
                             else
@@ -1219,7 +1219,7 @@
                                 Async.StartWithContinuations(
                                     closeHost(),
                                     (fun res->()),
-                                    (fun err->dbg.Error(err)),
+                                    (fun err->utils.dbg.Error(err)),
                                     (fun err->())
                                 )
                             )
@@ -1233,7 +1233,7 @@
                                 Async.StartWithContinuations(
                                     subman.Unsubscribe(),
                                     (fun res->()),
-                                    (fun err->dbg.Error(err)),
+                                    (fun err->utils.dbg.Error(err)),
                                     (fun err->())
                                 )
                             )
@@ -1253,7 +1253,7 @@
                 Async.StartWithContinuations(
                     comp,
                     (fun res->()),
-                    (fun err->dbg.Error(err)),
+                    (fun err->utils.dbg.Error(err)),
                     (fun err->()),
                     cts.Token
                 )
